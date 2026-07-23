@@ -1,6 +1,12 @@
 import verificationButtonHandler from '../../../handlers/verificationButtons.js';
 
-export default {
-  name: verificationButtonHandler.customId,
-  execute: verificationButtonHandler.execute,
-};
+export default [
+    {
+        name: 'verify_user',
+        execute: verificationButtonHandler.execute,
+    },
+    {
+        name: 'welcome_verify',
+        execute: verificationButtonHandler.execute,
+    }
+];

@@ -60,6 +60,6 @@ export async function handleVerificationButton(interaction, client) {
 }
 
 export default {
-    customId: "verify_user",
+    customId: "welcome_verify",
     execute: handleVerificationButton
-};
+}; 
