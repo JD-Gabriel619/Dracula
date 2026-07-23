@@ -12,7 +12,7 @@ export default {
      * If true and allowedRoles is empty,
      * any assignable role may be toggled.
      */
-    allowAllRoles: false,
+    allowAllRoles: true,
 
     /*
      * Block administrator-permission roles.
