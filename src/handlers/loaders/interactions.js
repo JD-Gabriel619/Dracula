@@ -56,7 +56,9 @@ export default async (client) => {
               logger.info(`Loaded ${type.slice(0, -1)}: ${interaction.name} (${fileName})`);
             }
           } catch (error) {
-            logger.error(`Error loading interaction ${relativePath} in ${type}:`, error);
+            logger.info(
+    `[INTERACTION LOADER] Loaded ${type.slice(0, -1)}: ${interaction.name} (${relativePath})`
+);
           }
         }
 

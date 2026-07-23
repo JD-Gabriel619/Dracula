@@ -1,3 +1,8 @@
+import { EmbedBuilder, MessageFlags } from 'discord.js';
+import { toggleRole } from '../services/roleToggleService.js';
+import { InteractionHelper } from '../utils/interactionHelper.js';
+import { handleInteractionError } from '../utils/errorHandler.js';
+
 export async function handleRoleToggleButton(interaction, client, args = []) {
     try {
         const roleId = args[0];
