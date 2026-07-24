@@ -1,4 +1,4 @@
-﻿import 'dotenv/config';
+import 'dotenv/config';
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import express from 'express';
@@ -52,15 +52,6 @@ class TitanBot extends Client {
       const dbInstance = await initializeDatabase();
       this.db = dbInstance.db;
 
-      // Temporary force register
-      startupLog('Force registering slash commands...');
-      try {
-        const { registerCommands } = await import('./handlers/loaders/commandLoader.js');
-        await registerCommands(this, { clientId: this.config.bot.clientId });
-      } catch (e) {
-        console.error("Force register failed", e);
-      }
-      
       const dbStatus = this.db.getStatus();
       if (dbStatus.isDegraded) {
         logger.warn('');
@@ -88,12 +79,12 @@ class TitanBot extends Client {
 
       initializeMusic(this);
       
-            startupLog('Logging into Discord...');
+      startupLog('Logging into Discord...');
       await this.login(this.config.bot.token);
       startupLog('Discord login successful');
 
-      // === FORCE REGISTER SLASH COMMANDS ===
-      startupLog('Force registering all slash commands...');
+      // Force Register Slash Commands
+      startupLog('Force registering slash commands...');
       try {
         const { registerCommands } = await import('./handlers/loaders/commandLoader.js');
         await registerCommands(this, { clientId: this.config.bot.clientId });
@@ -102,16 +93,16 @@ class TitanBot extends Client {
         logger.error('Failed to register slash commands:', error);
       }
 
-      // === NSFW MODULE REGISTRATION (AFTER LOGIN) ===
+      // Load NSFW Module
       startupLog('Loading NSFW module...');
-      const { registerNSFW } = await import('./modules/nsfw/index.js');
-      await registerNSFW(this);
-      startupLog('✅ NSFW Module loaded');
+      try {
+        const { registerNSFW } = await import('./modules/nsfw/index.js');
+        await registerNSFW(this);
+        startupLog('✅ NSFW Module loaded');
+      } catch (error) {
+        logger.warn('NSFW Module failed to load (non-fatal):', error.message);
+      }
 
-      startupLog('Registering slash commands globally...');
-      await this.registerCommands();
-      startupLog('Slash commands registration complete');
-      
       const databaseMode = dbStatus.isDegraded
         ? 'Optional in-memory mode (data resets after restart)'
         : 'Connected (persistent data enabled)';
@@ -127,13 +118,29 @@ class TitanBot extends Client {
     }
   }
 
-  // ... (rest of your file remains the same)
-  startWebServer() { /* unchanged */ }
-  setupCronJobs() { /* unchanged */ }
-  async updateAllCounters() { /* unchanged */ }
-  async loadHandlers() { /* unchanged */ }
-  async registerCommands() { /* unchanged */ }
-  async shutdown(reason = 'UNKNOWN') { /* unchanged */ }
+  startWebServer() {
+    // ... your existing web server code (keep it as is)
+  }
+
+  setupCronJobs() {
+    // ... your existing cron code
+  }
+
+  async updateAllCounters() {
+    // ... your existing code
+  }
+
+  async loadHandlers() {
+    // ... your existing code
+  }
+
+  async registerCommands() {
+    // ... your existing code
+  }
+
+  async shutdown(reason = 'UNKNOWN') {
+    // ... your existing code
+  }
 }
 
 try {
