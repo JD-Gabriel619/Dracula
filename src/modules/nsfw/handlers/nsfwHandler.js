@@ -6,30 +6,27 @@ import { getGuildConfig } from '../../services/config/guildConfig.js';
 import { logger } from '../../utils/logger.js';
 
 export function registerNSFWHandlers(client) {
-    
     client.on('interactionCreate', async interaction => {
 
-        // NSFW Enter Button
         if (interaction.isButton() && interaction.customId === 'nsfw_enter') {
             await interaction.showModal(createAgeGateModal());
             return;
         }
 
-        // Age Gate Modal
         if (interaction.isModalSubmit() && interaction.customId === 'nsfw_age_gate') {
             await interaction.deferReply({ ephemeral: true });
 
             const input = interaction.fields.getTextInputValue('age_confirmation');
-            
+
             if (verifyAgeGate(input)) {
                 const config = await getNSFWConfig(await getGuildConfig(interaction.client, interaction.guildId));
                 
                 if (config.nsfwRoleId) {
                     await interaction.member.roles.add(config.nsfwRoleId).catch(() => {});
                 }
-                
+
                 await interaction.editReply({ 
-                    content: "✅ Age verified. NSFW access granted." 
+                    content: "✅ Age verified. You now have NSFW access." 
                 });
             } else {
                 await interaction.editReply({ 
@@ -39,5 +36,5 @@ export function registerNSFWHandlers(client) {
         }
     });
 
-    logger.info("🔞 NSFW Age Gate system active");
+    logger.info("🔞 NSFW Panel + Age Gate registered");
 }
