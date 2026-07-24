@@ -88,9 +88,19 @@ class TitanBot extends Client {
 
       initializeMusic(this);
       
-      startupLog('Logging into Discord...');
+            startupLog('Logging into Discord...');
       await this.login(this.config.bot.token);
       startupLog('Discord login successful');
+
+      // === FORCE REGISTER SLASH COMMANDS ===
+      startupLog('Force registering all slash commands...');
+      try {
+        const { registerCommands } = await import('./handlers/loaders/commandLoader.js');
+        await registerCommands(this, { clientId: this.config.bot.clientId });
+        startupLog('✅ Slash commands registered successfully');
+      } catch (error) {
+        logger.error('Failed to register slash commands:', error);
+      }
 
       // === NSFW MODULE REGISTRATION (AFTER LOGIN) ===
       startupLog('Loading NSFW module...');
