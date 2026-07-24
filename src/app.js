@@ -52,6 +52,15 @@ class TitanBot extends Client {
       const dbInstance = await initializeDatabase();
       this.db = dbInstance.db;
 
+      // Temporary force register
+      startupLog('Force registering slash commands...');
+      try {
+        const { registerCommands } = await import('./handlers/loaders/commandLoader.js');
+        await registerCommands(this, { clientId: this.config.bot.clientId });
+      } catch (e) {
+        console.error("Force register failed", e);
+      }
+      
       const dbStatus = this.db.getStatus();
       if (dbStatus.isDegraded) {
         logger.warn('');
