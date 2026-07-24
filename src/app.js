@@ -93,16 +93,6 @@ class TitanBot extends Client {
         logger.error('Failed to register slash commands:', error);
       }
 
-      // NSFW Module (Safe Load)
-      startupLog('Loading NSFW module...');
-      try {
-        const { registerNSFW } = await import('./modules/nsfw/index.js');
-        await registerNSFW(this);
-        startupLog('✅ NSFW Module loaded');
-      } catch (error) {
-        logger.warn('NSFW Module failed to load (non-fatal):', error.message);
-      }
-
       const databaseMode = dbStatus.isDegraded
         ? 'Optional in-memory mode (data resets after restart)'
         : 'Connected (persistent data enabled)';
