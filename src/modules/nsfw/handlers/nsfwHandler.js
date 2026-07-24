@@ -2,8 +2,8 @@
 import { createNSFWPanel } from '../panels/nsfwPanel.js';
 import { verifyAgeGate, createAgeGateModal } from '../utils/ageGate.js';
 import { getNSFWConfig } from '../config.js';
-import { getGuildConfig } from '../../services/config/guildConfig.js';
-import { logger } from '../../utils/logger.js';
+import { getGuildConfig } from '../../../services/config/guildConfig.js';  // ← Fixed path
+import { logger } from '../../../utils/logger.js';
 
 export function registerNSFWHandlers(client) {
     client.on('interactionCreate', async interaction => {
