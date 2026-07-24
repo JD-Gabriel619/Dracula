@@ -3,7 +3,8 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import express from 'express';
 import cron from 'node-cron';
-
+import { registerNSFW } from './modules/nsfw/index.js';
+await registerNSFW(client);
 import config from './config/application.js';
 import { initializeDatabase } from './utils/database.js';
 import { getGuildConfig } from './services/config/guildConfig.js';
