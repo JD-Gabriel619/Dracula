@@ -6,7 +6,7 @@ export async function registerNSFW(client) {
         registerNSFWHandlers(client);
         console.log("🔞 NSFW Module loaded successfully");
     } catch (error) {
-        console.error("Failed to load NSFW module:", error);
+        console.error("❌ Failed to load NSFW module:", error.message);
     }
 }
 
