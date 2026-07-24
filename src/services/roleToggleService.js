@@ -14,7 +14,7 @@ export async function toggleRole(interaction, roleId) {
         );
     }
 
-    const member = interaction.member;
+    const member = await guild.members.fetch(interaction.user.id);
 
     if (!member) {
         throw createError(
@@ -81,7 +81,7 @@ export async function toggleRole(interaction, roleId) {
         }
     }
 
-    const botMember = guild.members.me;
+    const botMember = await guild.members.fetchMe();
 
     if (!botMember) {
         throw createError(
@@ -128,7 +128,11 @@ export async function toggleRole(interaction, roleId) {
     }
 
     await member.roles.add(role, 'Self-role toggle');
+    await member.fetch(true);
 
+logger.info('Roles after add', {
+    userRoles: [...member.roles.cache.keys()]
+});
     logger.info('Self-role added', {
         guildId: guild.id,
         userId: member.id,
